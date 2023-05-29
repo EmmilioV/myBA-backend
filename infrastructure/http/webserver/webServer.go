@@ -2,8 +2,14 @@ package webserver
 
 import "github.com/gin-gonic/gin"
 
-func NewWebServer() *gin.Engine {
+type WebServer struct {
+	*gin.Engine
+}
+
+func NewWebServer() *WebServer {
 	gin.SetMode(gin.ReleaseMode)
 
-	return gin.Default()
+	return &WebServer{
+		gin.Default(),
+	}
 }

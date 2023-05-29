@@ -7,14 +7,29 @@
 package main
 
 import (
-	"go.mod/infrastructure/app"
+	gateway2 "go.mod/domain/employee/gateway"
+	"go.mod/domain/employer/gateway"
+	"go.mod/domain/employer/usecase"
+	"go.mod/infrastructure/application"
+	"go.mod/infrastructure/database"
+	"go.mod/infrastructure/gateway/employee"
+	"go.mod/infrastructure/gateway/employer"
 	"go.mod/infrastructure/http/webserver"
 )
 
 // Injectors from wire.go:
 
-func CreateAppStarter() *app.AppStarter {
-	engine := webserver.NewWebServer()
-	appStarter := app.NewAppStarter(engine)
-	return appStarter
+func CreateApplication() *application.Application {
+	webServer := webserver.NewWebServer()
+	settings := application.LoadApplicationSettings()
+	dbSettings := application.GetDBSettings(settings)
+	dbConnection := database.NewConnection(dbSettings)
+	idbProvider := employer.NewDBProvider(dbConnection)
+	gateways := gateway.NewGateways(idbProvider)
+	idbInserter := employee.NewDBInserter()
+	idbDeleter := employee.NewDBDeleter()
+	gatewayGateways := gateway2.NewGateways(idbInserter, idbDeleter)
+	useCases := usecase.NewUseCases(gateways, gatewayGateways)
+	applicationApplication := application.NewApplication(webServer, settings, useCases)
+	return applicationApplication
 }

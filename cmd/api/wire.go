@@ -5,16 +5,36 @@ package main
 
 import (
 	"github.com/google/wire"
-	"go.mod/infrastructure/app"
+	employeeGatewayDomain "go.mod/domain/employee/gateway"
+	employerGatewayDomain "go.mod/domain/employer/gateway"
+	employerUseCases "go.mod/domain/employer/usecase"
+	"go.mod/infrastructure/application"
+	"go.mod/infrastructure/database"
+	employeeGatewayInfra "go.mod/infrastructure/gateway/employee"
+	employerGatewayInfra "go.mod/infrastructure/gateway/employer"
+
 	"go.mod/infrastructure/http/webserver"
 )
 
-func CreateAppStarter() *app.AppStarter {
+func CreateApplication() *application.Application {
 	wire.Build(
 		webserver.NewWebServer,
 
-		app.NewAppStarter,
+		application.LoadApplicationSettings,
+		application.NewApplication,
+		application.GetDBSettings,
+
+		database.NewConnection,
+
+		employerGatewayInfra.NewDBProvider,
+		employerGatewayDomain.NewGateways,
+
+		employeeGatewayInfra.NewDBInserter,
+		employeeGatewayInfra.NewDBDeleter,
+		employeeGatewayDomain.NewGateways,
+
+		employerUseCases.NewUseCases,
 	)
 
-	return new(app.AppStarter)
+	return new(application.Application)
 }

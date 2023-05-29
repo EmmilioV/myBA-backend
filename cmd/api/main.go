@@ -3,14 +3,18 @@ package main
 import (
 	"context"
 	"log"
+
+	"go.mod/infrastructure/http/entrypoint"
 )
 
 func main() {
-	appStarter := CreateAppStarter()
+	application := CreateApplication()
+
+	entrypoint.SetEntrypoints(application)
 
 	ctx := context.Background()
 
-	if err := appStarter.Run(ctx); err != nil {
+	if err := application.Run(ctx); err != nil {
 		log.Fatalf("FATAL: %s", err.Error())
 	}
 }

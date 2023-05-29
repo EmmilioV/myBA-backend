@@ -5,6 +5,8 @@ go 1.19
 require (
 	github.com/gin-gonic/gin v1.9.0
 	github.com/google/wire v0.5.0
+	github.com/kelseyhightower/envconfig v1.4.0
+	github.com/lib/pq v1.10.9
 	golang.org/x/sync v0.2.0
 )
 
