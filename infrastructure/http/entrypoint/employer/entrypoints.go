@@ -10,4 +10,6 @@ func Entrypoints(app *application.Application) {
 	employerGroup.POST("/register-employee", registerEmployee(app.EmployerUsecases.HireEmployee))
 	employerGroup.DELETE("/remove-employee/:id", removeEmployee(app.EmployerUsecases.UnhireEmployee))
 	employerGroup.PUT("/update-employee/:id", updateEmployee(app.EmployerUsecases.UpdateEmployeeInfo))
+
+	employerGroup.POST("/register-customer", registerCustomer(app.EmployerUsecases.RegisterCustomer))
 }

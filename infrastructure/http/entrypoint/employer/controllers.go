@@ -4,7 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"go.mod/domain/employee/entity"
+	customerEntity "go.mod/domain/customer/entity"
+	employeeEntity "go.mod/domain/employee/entity"
 	employerUsecase "go.mod/domain/employer/usecase"
 )
 
@@ -12,7 +13,7 @@ func registerEmployee(
 	hireEmployee *employerUsecase.HireEmployee,
 ) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		var employee *entity.Employee
+		var employee *employeeEntity.Employee
 
 		if err := ctx.BindJSON(&employee); err != nil {
 			ctx.JSON(http.StatusBadRequest, err)
@@ -60,7 +61,7 @@ func updateEmployee(
 	updateEmployeeInfo *employerUsecase.UpdateEmployeeInfo,
 ) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		var employee *entity.Employee
+		var employee *employeeEntity.Employee
 
 		if err := ctx.BindJSON(&employee); err != nil {
 			ctx.JSON(http.StatusBadRequest, err)
@@ -72,6 +73,33 @@ func updateEmployee(
 
 		err := updateEmployeeInfo.UseCase(
 			ctx.Request.Context(), employerID, employee,
+		)
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, err.Error())
+
+			return
+		}
+
+		ctx.JSON(http.StatusOK, "ok!")
+	}
+}
+
+func registerCustomer(
+	registerCustomer *employerUsecase.RegisterCustomer,
+) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		var customer *customerEntity.Customer
+
+		if err := ctx.BindJSON(&customer); err != nil {
+			ctx.JSON(http.StatusBadRequest, err)
+
+			return
+		}
+
+		employerID := ctx.Request.Header.Get("employer_id")
+
+		err := registerCustomer.UseCase(
+			ctx.Request.Context(), employerID, customer,
 		)
 		if err != nil {
 			ctx.JSON(http.StatusInternalServerError, err.Error())

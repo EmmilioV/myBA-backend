@@ -5,11 +5,13 @@ package main
 
 import (
 	"github.com/google/wire"
+	customerGatewayDomain "go.mod/domain/customer/gateway"
 	employeeGatewayDomain "go.mod/domain/employee/gateway"
 	employerGatewayDomain "go.mod/domain/employer/gateway"
 	employerUseCases "go.mod/domain/employer/usecase"
 	"go.mod/infrastructure/application"
 	"go.mod/infrastructure/database"
+	customerGatewayInfra "go.mod/infrastructure/gateway/customer"
 	employeeGatewayInfra "go.mod/infrastructure/gateway/employee"
 	employerGatewayInfra "go.mod/infrastructure/gateway/employer"
 
@@ -33,6 +35,9 @@ func CreateApplication() *application.Application {
 		employeeGatewayInfra.NewDBDeleter,
 		employeeGatewayInfra.NewDBUpdater,
 		employeeGatewayDomain.NewGateways,
+
+		customerGatewayInfra.NewDBInserter,
+		customerGatewayDomain.NewGateways,
 
 		employerUseCases.NewUseCases,
 	)

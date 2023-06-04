@@ -7,11 +7,13 @@
 package main
 
 import (
+	gateway3 "go.mod/domain/customer/gateway"
 	gateway2 "go.mod/domain/employee/gateway"
 	"go.mod/domain/employer/gateway"
 	"go.mod/domain/employer/usecase"
 	"go.mod/infrastructure/application"
 	"go.mod/infrastructure/database"
+	"go.mod/infrastructure/gateway/customer"
 	"go.mod/infrastructure/gateway/employee"
 	"go.mod/infrastructure/gateway/employer"
 	"go.mod/infrastructure/http/webserver"
@@ -30,7 +32,9 @@ func CreateApplication() *application.Application {
 	idbDeleter := employee.NewDBDeleter(dbConnection)
 	idbUpdater := employee.NewDBUpdater(dbConnection)
 	gatewayGateways := gateway2.NewGateways(idbInserter, idbDeleter, idbUpdater)
-	useCases := usecase.NewUseCases(gateways, gatewayGateways)
+	gatewayIDBInserter := customer.NewDBInserter(dbConnection)
+	gateways2 := gateway3.NewGateways(gatewayIDBInserter)
+	useCases := usecase.NewUseCases(gateways, gatewayGateways, gateways2)
 	applicationApplication := application.NewApplication(webServer, settings, useCases)
 	return applicationApplication
 }
