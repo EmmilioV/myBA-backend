@@ -4,30 +4,30 @@ import (
 	"context"
 	"errors"
 
+	employeeEntity "go.mod/domain/employee/entity"
 	employeeGateway "go.mod/domain/employee/gateway"
 	employerGateway "go.mod/domain/employer/gateway"
 )
 
-type UnhireEmployee struct {
+type UpdateEmployeeInfo struct {
 	employeeGateways *employeeGateway.Gateways
 	employerGateways *employerGateway.Gateways
 }
 
-func NewUnhireEmployee(
+func NewUpdateEmployeeInfo(
 	employeeGateways *employeeGateway.Gateways,
 	employerGateways *employerGateway.Gateways,
-) *UnhireEmployee {
-	return &UnhireEmployee{
+) *UpdateEmployeeInfo {
+	return &UpdateEmployeeInfo{
 		employeeGateways,
 		employerGateways,
 	}
 }
 
-func (unhireEmployee *UnhireEmployee) UseCase(
-	ctx context.Context,
-	employerID string, employeeID string,
+func (updateEmployeeInfo *UpdateEmployeeInfo) UseCase(
+	ctx context.Context, employerID string, employee *employeeEntity.Employee,
 ) error {
-	employer, err := unhireEmployee.employerGateways.IDBProvider.GetByID(ctx, employerID)
+	employer, err := updateEmployeeInfo.employerGateways.IDBProvider.GetByID(ctx, employerID)
 	if err != nil {
 		return err
 	}
@@ -36,5 +36,5 @@ func (unhireEmployee *UnhireEmployee) UseCase(
 		return errors.New("EMPLOYER_DOES_NOT_EXISTS")
 	}
 
-	return unhireEmployee.employeeGateways.IDBDeleter.DeleteOne(ctx, employeeID)
+	return updateEmployeeInfo.employeeGateways.IDBUpdater.UpdateByID(ctx, employee)
 }

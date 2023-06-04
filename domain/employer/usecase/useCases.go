@@ -6,8 +6,9 @@ import (
 )
 
 type UseCases struct {
-	HireEmployee   *HireEmployee
-	UnhireEmployee *UnhireEmployee
+	HireEmployee       *HireEmployee
+	UnhireEmployee     *UnhireEmployee
+	UpdateEmployeeInfo *UpdateEmployeeInfo
 }
 
 func NewUseCases(
@@ -15,7 +16,8 @@ func NewUseCases(
 	employeeGateways *employeeGateway.Gateways,
 ) *UseCases {
 	return &UseCases{
-		HireEmployee:   NewHireEmployee(employeeGateways, employerGateways),
-		UnhireEmployee: NewUnhireEmployee(employeeGateways, employerGateways),
+		HireEmployee:       NewHireEmployee(employeeGateways, employerGateways),
+		UnhireEmployee:     NewUnhireEmployee(employeeGateways, employerGateways),
+		UpdateEmployeeInfo: NewUpdateEmployeeInfo(employeeGateways, employerGateways),
 	}
 }

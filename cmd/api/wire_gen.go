@@ -26,9 +26,10 @@ func CreateApplication() *application.Application {
 	dbConnection := database.NewConnection(dbSettings)
 	idbProvider := employer.NewDBProvider(dbConnection)
 	gateways := gateway.NewGateways(idbProvider)
-	idbInserter := employee.NewDBInserter()
-	idbDeleter := employee.NewDBDeleter()
-	gatewayGateways := gateway2.NewGateways(idbInserter, idbDeleter)
+	idbInserter := employee.NewDBInserter(dbConnection)
+	idbDeleter := employee.NewDBDeleter(dbConnection)
+	idbUpdater := employee.NewDBUpdater(dbConnection)
+	gatewayGateways := gateway2.NewGateways(idbInserter, idbDeleter, idbUpdater)
 	useCases := usecase.NewUseCases(gateways, gatewayGateways)
 	applicationApplication := application.NewApplication(webServer, settings, useCases)
 	return applicationApplication

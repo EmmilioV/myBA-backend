@@ -19,7 +19,7 @@ func NewDBProvider(
 	dbConnection *database.DBConnection,
 ) employerGateway.IDBProvider {
 	return &DBProvider{
-		dbConnection,
+		DBConnection: dbConnection,
 	}
 }
 
@@ -29,9 +29,9 @@ func (provider *DBProvider) GetByID(
 	ctxTimeout, cancel := context.WithTimeout(ctx, 60*time.Second)
 	defer cancel()
 
-	filter := fmt.Sprintf("id='%s'", employerID)
+	condition := fmt.Sprintf("id='%s'", employerID)
 
-	queryCommand := fmt.Sprintf("SELECT * FROM %s WHERE %s", TABLE_NAME, filter)
+	queryCommand := fmt.Sprintf("SELECT * FROM %s WHERE %s", TABLE_NAME, condition)
 
 	rows, err := provider.DBConnection.SQL_DB.QueryContext(ctxTimeout, queryCommand)
 	if err != nil {

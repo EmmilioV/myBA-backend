@@ -31,6 +31,7 @@ func CreateApplication() *application.Application {
 
 		employeeGatewayInfra.NewDBInserter,
 		employeeGatewayInfra.NewDBDeleter,
+		employeeGatewayInfra.NewDBUpdater,
 		employeeGatewayDomain.NewGateways,
 
 		employerUseCases.NewUseCases,
