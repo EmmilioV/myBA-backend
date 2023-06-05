@@ -10,7 +10,9 @@ import (
 	customerGatewayDomain "go.mod/domain/customer/gateway"
 	employeeGatewayDomain "go.mod/domain/employee/gateway"
 	employerGatewayDomain "go.mod/domain/employer/gateway"
+	serviceGatewayDomain "go.mod/domain/service/gateway"
 
+	appointmentUseCases "go.mod/domain/appointment/usecase"
 	customerUseCases "go.mod/domain/customer/usecase"
 	employerUseCases "go.mod/domain/employer/usecase"
 
@@ -21,6 +23,7 @@ import (
 	customerGatewayInfra "go.mod/infrastructure/gateway/customer"
 	employeeGatewayInfra "go.mod/infrastructure/gateway/employee"
 	employerGatewayInfra "go.mod/infrastructure/gateway/employer"
+	serviceGatewayInfra "go.mod/infrastructure/gateway/service"
 
 	"go.mod/infrastructure/http/webserver"
 )
@@ -51,8 +54,13 @@ func CreateApplication() *application.Application {
 		appointmentGatewayInfra.NewDBProvider,
 		appointmentGatewayDomain.NewGateways,
 
+		serviceGatewayInfra.NewDBInserter,
+		serviceGatewayInfra.NewDBProvider,
+		serviceGatewayDomain.NewGateways,
+
 		employerUseCases.NewUseCases,
 		customerUseCases.NewUseCases,
+		appointmentUseCases.NewUseCases,
 	)
 
 	return new(application.Application)

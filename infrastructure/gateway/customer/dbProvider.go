@@ -36,8 +36,11 @@ func (provider *DBProvider) GetByID(
 		return nil, err
 	}
 
-	customer := entity.Customer{}
+	var customer *entity.Customer
+
 	for rows.Next() {
+		customer = &entity.Customer{}
+
 		err := rows.Scan(
 			&customer.ID,
 			&customer.Name,
@@ -50,5 +53,5 @@ func (provider *DBProvider) GetByID(
 		}
 	}
 
-	return &customer, nil
+	return customer, nil
 }

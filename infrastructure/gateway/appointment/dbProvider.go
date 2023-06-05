@@ -29,15 +29,17 @@ func (provider *DBProvider) GetOneByCustomerIDAndDate(
 	ctxTimeout, cancel := context.WithTimeout(ctx, 60*time.Second)
 	defer cancel()
 
-	queryCommand := fmt.Sprintf("SELECT * FROM %s WHERE customer_id=$1", APPOINTMENT_TABLE_NAME)
+	queryCommand := fmt.Sprintf("SELECT * FROM %s WHERE customer_id=$1 AND date_of=$2", APPOINTMENT_TABLE_NAME)
 
-	rows, err := provider.DBConnection.SQL_DB.QueryContext(ctxTimeout, queryCommand, customerID)
+	rows, err := provider.DBConnection.SQL_DB.QueryContext(ctxTimeout, queryCommand, customerID, date)
 	if err != nil {
 		return nil, err
 	}
 
-	appointment := entity.Appoinment{}
+	var appointment *entity.Appoinment
 	for rows.Next() {
+		appointment = &entity.Appoinment{}
+
 		err := rows.Scan(
 			&appointment.ID,
 			&appointment.EmployerID,
@@ -50,5 +52,5 @@ func (provider *DBProvider) GetOneByCustomerIDAndDate(
 		}
 	}
 
-	return &appointment, nil
+	return appointment, nil
 }

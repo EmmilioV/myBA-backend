@@ -5,7 +5,8 @@ import (
 	"fmt"
 	"log"
 
-	"go.mod/domain/customer/usecase"
+	appointmentUsecase "go.mod/domain/appointment/usecase"
+	customerUsecase "go.mod/domain/customer/usecase"
 	employerUsecase "go.mod/domain/employer/usecase"
 	"go.mod/infrastructure/http/webserver"
 	"golang.org/x/sync/errgroup"
@@ -15,21 +16,24 @@ type Application struct {
 	WebServer   *webserver.WebServer
 	AppSettings *Settings
 
-	EmployerUsecases *employerUsecase.UseCases
-	CustomerUsecases *usecase.UseCases
+	EmployerUsecases    *employerUsecase.UseCases
+	CustomerUsecases    *customerUsecase.UseCases
+	AppointmentUseCases *appointmentUsecase.UseCases
 }
 
 func NewApplication(
 	webServer *webserver.WebServer,
 	appSettings *Settings,
 	employerUsecases *employerUsecase.UseCases,
-	customerUsecases *usecase.UseCases,
+	customerUsecases *customerUsecase.UseCases,
+	appointmentUseCases *appointmentUsecase.UseCases,
 ) *Application {
 	return &Application{
-		webServer,
-		appSettings,
-		employerUsecases,
-		customerUsecases,
+		WebServer:           webServer,
+		AppSettings:         appSettings,
+		EmployerUsecases:    employerUsecases,
+		CustomerUsecases:    customerUsecases,
+		AppointmentUseCases: appointmentUseCases,
 	}
 }
 

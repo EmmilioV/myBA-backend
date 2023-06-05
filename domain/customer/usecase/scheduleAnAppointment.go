@@ -40,7 +40,7 @@ func (scheduleAnAppointment *ScheduleAnAppointment) UseCase(
 		return errors.New("EMPLOYER_DOES_NOT_EXISTS")
 	}
 
-	customer, err := scheduleAnAppointment.customerGateways.IDBProvider.GetByID(ctx, appointment.EmployerID)
+	customer, err := scheduleAnAppointment.customerGateways.IDBProvider.GetByID(ctx, appointment.CustomerID)
 	if err != nil {
 		return err
 	}
@@ -49,8 +49,12 @@ func (scheduleAnAppointment *ScheduleAnAppointment) UseCase(
 		return errors.New("CUSTOMER_DOES_NOT_EXISTS")
 	}
 
-	_, err = scheduleAnAppointment.appointmentGateways.GetOneByCustomerIDAndDate(ctx, appointment.CustomerID, appointment.Date)
-	if err == nil {
+	existingAppointment, err := scheduleAnAppointment.appointmentGateways.GetOneByCustomerIDAndDate(ctx, appointment.CustomerID, appointment.Date)
+	if err != nil {
+		return err
+	}
+
+	if existingAppointment != nil {
 		return errors.New("APPOINTMENT_ALREADY_EXISTS")
 	}
 

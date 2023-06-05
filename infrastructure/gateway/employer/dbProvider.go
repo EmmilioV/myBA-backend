@@ -29,15 +29,17 @@ func (provider *DBProvider) GetByID(
 	ctxTimeout, cancel := context.WithTimeout(ctx, 60*time.Second)
 	defer cancel()
 
-	queryCommand := fmt.Sprintf("SELECT * FROM id=$1 WHERE %s", TABLE_NAME)
+	queryCommand := fmt.Sprintf("SELECT * FROM %s WHERE id=$1", TABLE_NAME)
 
 	rows, err := provider.DBConnection.SQL_DB.QueryContext(ctxTimeout, queryCommand, employerID)
 	if err != nil {
 		return nil, err
 	}
 
-	employer := entity.Employer{}
+	var employer *entity.Employer
 	for rows.Next() {
+		employer = &entity.Employer{}
+
 		err := rows.Scan(
 			&employer.ID,
 			&employer.Name,
@@ -50,5 +52,5 @@ func (provider *DBProvider) GetByID(
 		}
 	}
 
-	return &employer, nil
+	return employer, nil
 }
