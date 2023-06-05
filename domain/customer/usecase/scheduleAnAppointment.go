@@ -50,7 +50,7 @@ func (scheduleAnAppointment *ScheduleAnAppointment) UseCase(
 	}
 
 	_, err = scheduleAnAppointment.appointmentGateways.GetOneByCustomerIDAndDate(ctx, appointment.CustomerID, appointment.Date)
-	if err != nil {
+	if err == nil {
 		return errors.New("APPOINTMENT_ALREADY_EXISTS")
 	}
 

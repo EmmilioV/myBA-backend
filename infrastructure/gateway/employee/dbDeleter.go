@@ -28,10 +28,9 @@ func (deleter *DBDeleter) DeleteOne(
 	ctxTimeout, cancel := context.WithTimeout(ctx, 60*time.Second)
 	defer cancel()
 
-	condition := fmt.Sprintf("id='%s'", employeeID)
-	deleteCommand := fmt.Sprintf("DELETE FROM %s WHERE %s", EMPLOYEE_TABLE_NAME, condition)
+	deleteCommand := fmt.Sprintf("DELETE FROM %s WHERE id=$1", EMPLOYEE_TABLE_NAME)
 
-	result, err := deleter.DBConnection.SQL_DB.ExecContext(ctxTimeout, deleteCommand)
+	result, err := deleter.DBConnection.SQL_DB.ExecContext(ctxTimeout, deleteCommand, employeeID)
 	if err != nil {
 		return err
 	}

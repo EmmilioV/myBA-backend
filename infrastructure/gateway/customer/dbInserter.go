@@ -29,10 +29,9 @@ func (inserter *DBInserter) InsertOne(
 	ctxTimeout, cancel := context.WithTimeout(ctx, 60*time.Second)
 	defer cancel()
 
-	values := fmt.Sprintf("'%s','%s','%s', '%s'", customer.ID, customer.Name, customer.Email, *customer.PhoneNumber)
-	insertCommand := fmt.Sprintf("INSERT INTO %s (id, name, email, phone_number) VALUES (%s)", CUSTOMER_TABLE_NAME, values)
+	insertCommand := fmt.Sprintf("INSERT INTO %s (id, name, email, phone_number) VALUES ($1, $2, $3, $4)", CUSTOMER_TABLE_NAME)
 
-	result, err := inserter.DBConnection.SQL_DB.ExecContext(ctxTimeout, insertCommand)
+	result, err := inserter.DBConnection.SQL_DB.ExecContext(ctxTimeout, insertCommand, customer.ID, customer.Name, customer.Email, *customer.PhoneNumber)
 	if err != nil {
 		return err
 	}

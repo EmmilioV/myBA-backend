@@ -30,11 +30,9 @@ func (updater *DBUpdater) UpdateByID(
 	ctxTimeout, cancel := context.WithTimeout(ctx, 60*time.Second)
 	defer cancel()
 
-	set := fmt.Sprintf("name = '%s', email = '%s'", employee.Name, employee.Email)
-	condition := fmt.Sprintf("id='%s'", employee.ID)
-	updateCommand := fmt.Sprintf("UPDATE %s SET %s WHERE %s", EMPLOYEE_TABLE_NAME, set, condition)
+	updateCommand := fmt.Sprintf("UPDATE name = $1, email = $2 SET %s WHERE id=$3", EMPLOYEE_TABLE_NAME)
 
-	result, err := updater.DBConnection.SQL_DB.ExecContext(ctxTimeout, updateCommand)
+	result, err := updater.DBConnection.SQL_DB.ExecContext(ctxTimeout, updateCommand, employee.Name, employee.Email, employee.ID)
 	if err != nil {
 		return err
 	}

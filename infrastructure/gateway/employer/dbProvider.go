@@ -29,11 +29,9 @@ func (provider *DBProvider) GetByID(
 	ctxTimeout, cancel := context.WithTimeout(ctx, 60*time.Second)
 	defer cancel()
 
-	condition := fmt.Sprintf("id='%s'", employerID)
+	queryCommand := fmt.Sprintf("SELECT * FROM id=$1 WHERE %s", TABLE_NAME)
 
-	queryCommand := fmt.Sprintf("SELECT * FROM %s WHERE %s", TABLE_NAME, condition)
-
-	rows, err := provider.DBConnection.SQL_DB.QueryContext(ctxTimeout, queryCommand)
+	rows, err := provider.DBConnection.SQL_DB.QueryContext(ctxTimeout, queryCommand, employerID)
 	if err != nil {
 		return nil, err
 	}
