@@ -14,6 +14,7 @@ import (
 
 	appointmentUseCases "go.mod/domain/appointment/usecase"
 	customerUseCases "go.mod/domain/customer/usecase"
+	employeeUseCases "go.mod/domain/employee/usecase"
 	employerUseCases "go.mod/domain/employer/usecase"
 
 	"go.mod/infrastructure/application"
@@ -42,6 +43,7 @@ func CreateApplication() *application.Application {
 		employerGatewayDomain.NewGateways,
 
 		employeeGatewayInfra.NewDBInserter,
+		employeeGatewayInfra.NewDBProvider,
 		employeeGatewayInfra.NewDBDeleter,
 		employeeGatewayInfra.NewDBUpdater,
 		employeeGatewayDomain.NewGateways,
@@ -59,6 +61,7 @@ func CreateApplication() *application.Application {
 		serviceGatewayDomain.NewGateways,
 
 		employerUseCases.NewUseCases,
+		employeeUseCases.NewUseCases,
 		customerUseCases.NewUseCases,
 		appointmentUseCases.NewUseCases,
 	)

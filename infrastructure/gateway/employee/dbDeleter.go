@@ -7,15 +7,15 @@ import (
 	"time"
 
 	employeeGateway "go.mod/domain/employee/gateway"
-	"go.mod/infrastructure/database"
+	db "go.mod/infrastructure/database"
 )
 
 type DBDeleter struct {
-	DBConnection *database.DBConnection
+	DBConnection *db.DBConnection
 }
 
 func NewDBDeleter(
-	dbConnection *database.DBConnection,
+	dbConnection *db.DBConnection,
 ) employeeGateway.IDBDeleter {
 	return &DBDeleter{
 		DBConnection: dbConnection,
@@ -28,7 +28,7 @@ func (deleter *DBDeleter) DeleteOne(
 	ctxTimeout, cancel := context.WithTimeout(ctx, 60*time.Second)
 	defer cancel()
 
-	deleteCommand := fmt.Sprintf("DELETE FROM %s WHERE id=$1", EMPLOYEE_TABLE_NAME)
+	deleteCommand := fmt.Sprintf("DELETE FROM %s WHERE id=$1", db.Employee)
 
 	result, err := deleter.DBConnection.SQL_DB.ExecContext(ctxTimeout, deleteCommand, employeeID)
 	if err != nil {

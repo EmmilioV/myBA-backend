@@ -8,15 +8,15 @@ import (
 
 	"go.mod/domain/service/entity"
 	serviceGateway "go.mod/domain/service/gateway"
-	"go.mod/infrastructure/database"
+	db "go.mod/infrastructure/database"
 )
 
 type DBProvider struct {
-	DBConnection *database.DBConnection
+	DBConnection *db.DBConnection
 }
 
 func NewDBProvider(
-	dbConnection *database.DBConnection,
+	dbConnection *db.DBConnection,
 ) serviceGateway.IDBProvider {
 	return &DBProvider{
 		DBConnection: dbConnection,
@@ -29,7 +29,7 @@ func (provider *DBProvider) GetByID(
 	ctxTimeout, cancel := context.WithTimeout(ctx, 60*time.Second)
 	defer cancel()
 
-	queryCommand := fmt.Sprintf("SELECT * FROM %s WHERE id=$1", SERVICE_TABLE_NAME)
+	queryCommand := fmt.Sprintf("SELECT * FROM %s WHERE id=$1", db.Service)
 
 	rows, err := provider.DBConnection.SQL_DB.QueryContext(ctxTimeout, queryCommand, serviceID)
 	if err != nil {
@@ -65,7 +65,7 @@ func (provider *DBProvider) GetAll(
 	ctxTimeout, cancel := context.WithTimeout(ctx, 60*time.Second)
 	defer cancel()
 
-	queryCommand := fmt.Sprintf("SELECT * FROM %s", SERVICE_TABLE_NAME)
+	queryCommand := fmt.Sprintf("SELECT * FROM %s", db.Service)
 
 	rows, err := provider.DBConnection.SQL_DB.QueryContext(ctxTimeout, queryCommand)
 	if err != nil {

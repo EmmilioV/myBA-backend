@@ -12,6 +12,7 @@ import (
 	gateway3 "go.mod/domain/customer/gateway"
 	usecase2 "go.mod/domain/customer/usecase"
 	gateway2 "go.mod/domain/employee/gateway"
+	usecase4 "go.mod/domain/employee/usecase"
 	"go.mod/domain/employer/gateway"
 	"go.mod/domain/employer/usecase"
 	gateway5 "go.mod/domain/service/gateway"
@@ -35,21 +36,23 @@ func CreateApplication() *application.Application {
 	idbProvider := employer.NewDBProvider(dbConnection)
 	gateways := gateway.NewGateways(idbProvider)
 	idbInserter := employee.NewDBInserter(dbConnection)
+	gatewayIDBProvider := employee.NewDBProvider(dbConnection)
 	idbDeleter := employee.NewDBDeleter(dbConnection)
 	idbUpdater := employee.NewDBUpdater(dbConnection)
-	gatewayGateways := gateway2.NewGateways(idbInserter, idbDeleter, idbUpdater)
+	gatewayGateways := gateway2.NewGateways(idbInserter, gatewayIDBProvider, idbDeleter, idbUpdater)
 	gatewayIDBInserter := customer.NewDBInserter(dbConnection)
-	gatewayIDBProvider := customer.NewDBProvider(dbConnection)
-	gateways2 := gateway3.NewGateways(gatewayIDBInserter, gatewayIDBProvider)
+	idbProvider2 := customer.NewDBProvider(dbConnection)
+	gateways2 := gateway3.NewGateways(gatewayIDBInserter, idbProvider2)
 	useCases := usecase.NewUseCases(gateways, gatewayGateways, gateways2)
 	idbInserter2 := appointment.NewDBInserter(dbConnection)
-	idbProvider2 := appointment.NewDBProvider(dbConnection)
-	gateways3 := gateway4.NewGateways(idbInserter2, idbProvider2)
+	idbProvider3 := appointment.NewDBProvider(dbConnection)
+	gateways3 := gateway4.NewGateways(idbInserter2, idbProvider3)
 	usecaseUseCases := usecase2.NewUseCases(gateways, gateways2, gateways3)
-	idbProvider3 := service.NewDBProvider(dbConnection)
+	idbProvider4 := service.NewDBProvider(dbConnection)
 	idbInserter3 := service.NewDBInserter(dbConnection)
-	gateways4 := gateway5.NewGateways(idbProvider3, idbInserter3)
+	gateways4 := gateway5.NewGateways(idbProvider4, idbInserter3)
 	useCases2 := usecase3.NewUseCases(gateways4, gateways)
-	applicationApplication := application.NewApplication(webServer, settings, useCases, usecaseUseCases, useCases2)
+	useCases3 := usecase4.NewUseCases(gatewayGateways)
+	applicationApplication := application.NewApplication(webServer, settings, useCases, usecaseUseCases, useCases2, useCases3)
 	return applicationApplication
 }

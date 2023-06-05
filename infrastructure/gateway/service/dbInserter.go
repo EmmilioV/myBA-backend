@@ -8,15 +8,15 @@ import (
 
 	"go.mod/domain/service/entity"
 	"go.mod/domain/service/gateway"
-	"go.mod/infrastructure/database"
+	db "go.mod/infrastructure/database"
 )
 
 type DBInserter struct {
-	DBConnection *database.DBConnection
+	DBConnection *db.DBConnection
 }
 
 func NewDBInserter(
-	dbConnection *database.DBConnection,
+	dbConnection *db.DBConnection,
 ) gateway.IDBInserter {
 	return &DBInserter{
 		DBConnection: dbConnection,
@@ -31,7 +31,7 @@ func (inserter *DBInserter) InsertOne(
 
 	insertCommand := fmt.Sprintf(
 		"INSERT INTO %s (appointment_id, employee_id, type_of, cost_of, duration, is_completed, observations) VALUES ($1, $2, $3, $4, $5, $6, $7)",
-		SERVICE_TABLE_NAME,
+		db.Service,
 	)
 
 	result, err := inserter.DBConnection.SQL_DB.ExecContext(ctxTimeout, insertCommand,

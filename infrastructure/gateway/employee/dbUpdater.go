@@ -9,15 +9,15 @@ import (
 
 	"go.mod/domain/employee/entity"
 	employeeGateway "go.mod/domain/employee/gateway"
-	"go.mod/infrastructure/database"
+	db "go.mod/infrastructure/database"
 )
 
 type DBUpdater struct {
-	DBConnection *database.DBConnection
+	DBConnection *db.DBConnection
 }
 
 func NewDBUpdater(
-	dbConnection *database.DBConnection,
+	dbConnection *db.DBConnection,
 ) employeeGateway.IDBUpdater {
 	return &DBUpdater{
 		DBConnection: dbConnection,
@@ -30,7 +30,7 @@ func (updater *DBUpdater) UpdateByID(
 	ctxTimeout, cancel := context.WithTimeout(ctx, 60*time.Second)
 	defer cancel()
 
-	updateCommand := fmt.Sprintf("UPDATE name = $1, email = $2 SET %s WHERE id=$3", EMPLOYEE_TABLE_NAME)
+	updateCommand := fmt.Sprintf("UPDATE name = $1, email = $2 SET %s WHERE id=$3", db.Employee)
 
 	result, err := updater.DBConnection.SQL_DB.ExecContext(ctxTimeout, updateCommand, employee.Name, employee.Email, employee.ID)
 	if err != nil {
