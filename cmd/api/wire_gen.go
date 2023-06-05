@@ -50,9 +50,10 @@ func CreateApplication() *application.Application {
 	usecaseUseCases := usecase2.NewUseCases(gateways, gateways2, gateways3)
 	idbProvider4 := service.NewDBProvider(dbConnection)
 	idbInserter3 := service.NewDBInserter(dbConnection)
-	gateways4 := gateway5.NewGateways(idbProvider4, idbInserter3)
+	gatewayIDBUpdater := service.NewDBUpdater(dbConnection)
+	gateways4 := gateway5.NewGateways(idbProvider4, idbInserter3, gatewayIDBUpdater)
 	useCases2 := usecase3.NewUseCases(gateways4, gateways)
-	useCases3 := usecase4.NewUseCases(gatewayGateways)
+	useCases3 := usecase4.NewUseCases(gatewayGateways, gateways4)
 	applicationApplication := application.NewApplication(webServer, settings, useCases, usecaseUseCases, useCases2, useCases3)
 	return applicationApplication
 }

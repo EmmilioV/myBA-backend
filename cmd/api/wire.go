@@ -58,6 +58,7 @@ func CreateApplication() *application.Application {
 
 		serviceGatewayInfra.NewDBInserter,
 		serviceGatewayInfra.NewDBProvider,
+		serviceGatewayInfra.NewDBUpdater,
 		serviceGatewayDomain.NewGateways,
 
 		employerUseCases.NewUseCases,
