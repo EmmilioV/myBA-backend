@@ -7,12 +7,15 @@
 package main
 
 import (
+	gateway4 "go.mod/domain/appointment/gateway"
 	gateway3 "go.mod/domain/customer/gateway"
+	usecase2 "go.mod/domain/customer/usecase"
 	gateway2 "go.mod/domain/employee/gateway"
 	"go.mod/domain/employer/gateway"
 	"go.mod/domain/employer/usecase"
 	"go.mod/infrastructure/application"
 	"go.mod/infrastructure/database"
+	"go.mod/infrastructure/gateway/appointment"
 	"go.mod/infrastructure/gateway/customer"
 	"go.mod/infrastructure/gateway/employee"
 	"go.mod/infrastructure/gateway/employer"
@@ -33,8 +36,13 @@ func CreateApplication() *application.Application {
 	idbUpdater := employee.NewDBUpdater(dbConnection)
 	gatewayGateways := gateway2.NewGateways(idbInserter, idbDeleter, idbUpdater)
 	gatewayIDBInserter := customer.NewDBInserter(dbConnection)
-	gateways2 := gateway3.NewGateways(gatewayIDBInserter)
+	gatewayIDBProvider := customer.NewDBProvider(dbConnection)
+	gateways2 := gateway3.NewGateways(gatewayIDBInserter, gatewayIDBProvider)
 	useCases := usecase.NewUseCases(gateways, gatewayGateways, gateways2)
-	applicationApplication := application.NewApplication(webServer, settings, useCases)
+	idbInserter2 := appointment.NewDBInserter(dbConnection)
+	idbProvider2 := appointment.NewDBProvider(dbConnection)
+	gateways3 := gateway4.NewGateways(idbInserter2, idbProvider2)
+	usecaseUseCases := usecase2.NewUseCases(gateways, gateways2, gateways3)
+	applicationApplication := application.NewApplication(webServer, settings, useCases, usecaseUseCases)
 	return applicationApplication
 }
