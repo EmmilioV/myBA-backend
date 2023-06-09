@@ -13,11 +13,11 @@ import (
 )
 
 type DBUpdater struct {
-	DBConnection *db.DBConnection
+	DBConnection *db.Connection
 }
 
 func NewDBUpdater(
-	dbConnection *db.DBConnection,
+	dbConnection *db.Connection,
 ) serviceGateway.IDBUpdater {
 	return &DBUpdater{
 		DBConnection: dbConnection,

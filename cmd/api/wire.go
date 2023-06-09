@@ -19,6 +19,7 @@ import (
 
 	"go.mod/infrastructure/application"
 	"go.mod/infrastructure/database"
+	"go.mod/infrastructure/messaging"
 
 	appointmentGatewayInfra "go.mod/infrastructure/gateway/appointment"
 	customerGatewayInfra "go.mod/infrastructure/gateway/customer"
@@ -36,8 +37,10 @@ func CreateApplication() *application.Application {
 		application.LoadApplicationSettings,
 		application.NewApplication,
 		application.GetDBSettings,
+		application.GetMQSettings,
 
 		database.NewConnection,
+		messaging.NewConnection,
 
 		employerGatewayInfra.NewDBProvider,
 		employerGatewayDomain.NewGateways,
@@ -59,6 +62,7 @@ func CreateApplication() *application.Application {
 		serviceGatewayInfra.NewDBInserter,
 		serviceGatewayInfra.NewDBProvider,
 		serviceGatewayInfra.NewDBUpdater,
+		serviceGatewayInfra.NewMQPublisher,
 		serviceGatewayDomain.NewGateways,
 
 		employerUseCases.NewUseCases,

@@ -12,11 +12,11 @@ import (
 )
 
 type DBInserter struct {
-	DBConnection *db.DBConnection
+	DBConnection *db.Connection
 }
 
 func NewDBInserter(
-	dbConnection *db.DBConnection,
+	dbConnection *db.Connection,
 ) gateway.IDBInserter {
 	return &DBInserter{
 		DBConnection: dbConnection,

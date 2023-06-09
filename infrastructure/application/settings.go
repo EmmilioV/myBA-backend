@@ -3,11 +3,13 @@ package application
 import (
 	"github.com/kelseyhightower/envconfig"
 	"go.mod/infrastructure/database"
+	"go.mod/infrastructure/messaging"
 )
 
 type Settings struct {
 	Port       string `envconfig:"PORT"`
-	DBSettings *database.DBSettings
+	DBSettings *database.Settings
+	MQSettings *messaging.Settings
 }
 
 func LoadApplicationSettings() *Settings {
@@ -20,6 +22,10 @@ func LoadApplicationSettings() *Settings {
 	return &settings
 }
 
-func GetDBSettings(settings *Settings) *database.DBSettings {
+func GetDBSettings(settings *Settings) *database.Settings {
 	return settings.DBSettings
+}
+
+func GetMQSettings(settings *Settings) *messaging.Settings {
+	return settings.MQSettings
 }

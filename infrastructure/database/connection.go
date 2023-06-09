@@ -8,13 +8,13 @@ import (
 	_ "github.com/lib/pq"
 )
 
-type DBConnection struct {
+type Connection struct {
 	SQL_DB *sql.DB
 }
 
 func NewConnection(
-	dbSettings *DBSettings,
-) *DBConnection {
+	dbSettings *Settings,
+) *Connection {
 	connectionString := fmt.Sprintf(
 		"host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
 		dbSettings.Host, dbSettings.Port, dbSettings.User, dbSettings.Password,
@@ -26,7 +26,7 @@ func NewConnection(
 		log.Fatal(err)
 	}
 
-	return &DBConnection{
+	return &Connection{
 		SQL_DB: sql_db,
 	}
 }

@@ -12,11 +12,11 @@ import (
 )
 
 type DBProvider struct {
-	DBConnection *db.DBConnection
+	DBConnection *db.Connection
 }
 
 func NewDBProvider(
-	dbConnection *db.DBConnection,
+	dbConnection *db.Connection,
 ) serviceGateway.IDBProvider {
 	return &DBProvider{
 		DBConnection: dbConnection,

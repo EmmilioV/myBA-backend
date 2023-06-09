@@ -1,6 +1,6 @@
 package database
 
-type DBSettings struct {
+type Settings struct {
 	Host     string `envconfig:"DATABASE_HOST" required:"true"`
 	Port     string `envconfig:"DATABASE_PORT" required:"true"`
 	User     string `envconfig:"DATABASE_USER" required:"true"`

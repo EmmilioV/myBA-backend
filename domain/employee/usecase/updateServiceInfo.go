@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 
+	"go.mod/domain/common"
 	employeeGateway "go.mod/domain/employee/gateway"
 	"go.mod/domain/service/entity"
 	serviceGateway "go.mod/domain/service/gateway"
@@ -36,5 +37,16 @@ func (updateServiceInfo *UpdateServiceInfo) UseCase(
 		return errors.New("EMPLOYEE_DOES_NOT_EXISTS")
 	}
 
-	return updateServiceInfo.serviceGateways.IDBUpdater.UpdateOneByID(ctx, service)
+	err = updateServiceInfo.serviceGateways.IDBUpdater.UpdateOneByID(ctx, service)
+	if err != nil {
+		return err
+	}
+
+	event := &common.Event{
+		Action: "ServiceUpdated",
+		UserId: employeeID,
+		New:    service,
+	}
+
+	return updateServiceInfo.serviceGateways.IMQPublisher.ServiceUpdated(ctx, event)
 }

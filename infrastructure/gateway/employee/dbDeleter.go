@@ -11,11 +11,11 @@ import (
 )
 
 type DBDeleter struct {
-	DBConnection *db.DBConnection
+	DBConnection *db.Connection
 }
 
 func NewDBDeleter(
-	dbConnection *db.DBConnection,
+	dbConnection *db.Connection,
 ) employeeGateway.IDBDeleter {
 	return &DBDeleter{
 		DBConnection: dbConnection,
