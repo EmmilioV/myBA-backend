@@ -7,10 +7,11 @@ import (
 )
 
 type UseCases struct {
-	HireEmployee       *HireEmployee
-	UnhireEmployee     *UnhireEmployee
-	UpdateEmployeeInfo *UpdateEmployeeInfo
-	RegisterCustomer   *RegisterCustomer
+	HireEmployee               *HireEmployee
+	UnhireEmployee             *UnhireEmployee
+	UpdateEmployeeInfo         *UpdateEmployeeInfo
+	RegisterCustomer           *RegisterCustomer
+	SearchWithAppointmentsByID *SearchWithAppointmentsByID
 }
 
 func NewUseCases(
@@ -19,9 +20,10 @@ func NewUseCases(
 	customerGateways *customerGateway.Gateways,
 ) *UseCases {
 	return &UseCases{
-		HireEmployee:       NewHireEmployee(employeeGateways, employerGateways),
-		UnhireEmployee:     NewUnhireEmployee(employeeGateways, employerGateways),
-		UpdateEmployeeInfo: NewUpdateEmployeeInfo(employeeGateways, employerGateways),
-		RegisterCustomer:   NewRegisterCustomer(customerGateways, employerGateways),
+		HireEmployee:               NewHireEmployee(employeeGateways, employerGateways),
+		UnhireEmployee:             NewUnhireEmployee(employeeGateways, employerGateways),
+		UpdateEmployeeInfo:         NewUpdateEmployeeInfo(employeeGateways, employerGateways),
+		RegisterCustomer:           NewRegisterCustomer(customerGateways, employerGateways),
+		SearchWithAppointmentsByID: NewsearchWithAppointmentsByID(employerGateways),
 	}
 }

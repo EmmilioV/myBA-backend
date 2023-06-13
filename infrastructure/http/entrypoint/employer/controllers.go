@@ -110,3 +110,22 @@ func registerCustomer(
 		ctx.JSON(http.StatusOK, "ok!")
 	}
 }
+
+func searchWithAppointmentsByID(
+	searchWithAppointmentsByID *employerUsecase.SearchWithAppointmentsByID,
+) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		employerID := ctx.Params.ByName("id")
+
+		response, err := searchWithAppointmentsByID.UseCase(
+			ctx.Request.Context(), employerID,
+		)
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, err.Error())
+
+			return
+		}
+
+		ctx.JSON(http.StatusOK, response)
+	}
+}
