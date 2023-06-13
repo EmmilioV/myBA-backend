@@ -29,7 +29,7 @@ func (provider *DBProvider) GetByID(
 	ctxTimeout, cancel := context.WithTimeout(ctx, 60*time.Second)
 	defer cancel()
 
-	queryCommand := fmt.Sprintf("SELECT * FROM %s WHERE id=$1", db.Service)
+	queryCommand := fmt.Sprintf("SELECT %s.id as service_id, * FROM %s WHERE id=$1", db.Service, db.Service)
 
 	rows, err := provider.DBConnection.SQL_DB.QueryContext(ctxTimeout, queryCommand, serviceID)
 	if err != nil {
@@ -65,7 +65,7 @@ func (provider *DBProvider) GetAll(
 	ctxTimeout, cancel := context.WithTimeout(ctx, 60*time.Second)
 	defer cancel()
 
-	queryCommand := fmt.Sprintf("SELECT * FROM %s", db.Service)
+	queryCommand := fmt.Sprintf("SELECT %s.id as service_id, * FROM %s", db.Service, db.Service)
 
 	rows, err := provider.DBConnection.SQL_DB.QueryContext(ctxTimeout, queryCommand)
 	if err != nil {

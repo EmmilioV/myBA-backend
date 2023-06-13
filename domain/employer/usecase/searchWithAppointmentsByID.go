@@ -9,21 +9,21 @@ import (
 )
 
 type SearchWithAppointmentsByID struct {
-	employerDBProvider *employerGateway.Gateways
+	employerGateways *employerGateway.Gateways
 }
 
 func NewsearchWithAppointmentsByID(
 	employerDBProvider *employerGateway.Gateways,
 ) *SearchWithAppointmentsByID {
 	return &SearchWithAppointmentsByID{
-		employerDBProvider: employerDBProvider,
+		employerGateways: employerDBProvider,
 	}
 }
 
 func (searchAppointmentByID *SearchWithAppointmentsByID) UseCase(
 	ctx context.Context, employeerID string,
 ) (*employerEntity.EmployerWithAppointmentsInfo, error) {
-	employer, err := searchAppointmentByID.employerDBProvider.IDBProvider.GetByID(ctx, employeerID)
+	employer, err := searchAppointmentByID.employerGateways.IDBProvider.GetByID(ctx, employeerID)
 	if err != nil {
 		return nil, err
 	}
@@ -32,5 +32,5 @@ func (searchAppointmentByID *SearchWithAppointmentsByID) UseCase(
 		return nil, errors.New("EMPLOYER_NOT_FOUND")
 	}
 
-	return searchAppointmentByID.employerDBProvider.IDBProvider.GetByIDWithAppointments(ctx, employeerID)
+	return searchAppointmentByID.employerGateways.IDBProvider.GetByIDWithAppointments(ctx, employeerID)
 }

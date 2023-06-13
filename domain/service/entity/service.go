@@ -1,7 +1,7 @@
 package entity
 
 type Service struct {
-	ID            int     `json:"id"`
+	ID            int     `json:"service_id"`
 	AppointmentID string  `json:"appointment_id"`
 	EmployeeID    string  `json:"employee_id"`
 	Type          string  `json:"type_of"`

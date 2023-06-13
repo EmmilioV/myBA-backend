@@ -56,7 +56,7 @@ func CreateApplication() *application.Application {
 	messagingConnection := messaging.NewConnection(messagingSettings)
 	imqPublisher := service.NewMQPublisher(messagingConnection)
 	gateways4 := gateway5.NewGateways(idbProvider4, idbInserter3, gatewayIDBUpdater, imqPublisher)
-	useCases2 := usecase3.NewUseCases(gateways4, gateways)
+	useCases2 := usecase3.NewUseCases(gateways4, gateways, gateways3)
 	useCases3 := usecase4.NewUseCases(gatewayGateways, gateways4)
 	applicationApplication := application.NewApplication(webServer, settings, useCases, usecaseUseCases, useCases2, useCases3)
 	return applicationApplication

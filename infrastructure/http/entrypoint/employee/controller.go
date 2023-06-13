@@ -39,7 +39,7 @@ func updateEmployeeService(
 			return
 		}
 
-		employeeID := ctx.Request.Header.Get("employee_id")
+		employeeID := ctx.Request.Header.Get("user_id")
 
 		err := updateServiceInfo.UseCase(
 			ctx.Request.Context(), employeeID, service,

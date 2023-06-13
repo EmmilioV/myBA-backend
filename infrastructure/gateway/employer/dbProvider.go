@@ -73,7 +73,7 @@ func (provider *DBProvider) GetByIDWithAppointments(
 	queryCommand := fmt.Sprintf("SELECT %s FROM %s \n", columns, db.Employer)
 	queryCommand += fmt.Sprintf("INNER JOIN %s ON %s.employer_id = %s.id \n", db.Appointment, db.Appointment, db.Employer)
 	queryCommand += fmt.Sprintf("INNER JOIN %s ON %s.customer_id = %s.id \n", db.Customer, db.Appointment, db.Customer)
-	queryCommand += fmt.Sprintf("WHERE %s.id = $1", db.Employer)
+	queryCommand += fmt.Sprintf("WHERE %s.id = $1 \n", db.Employer)
 	queryCommand += fmt.Sprintf("ORDER BY %s.date_of DESC", db.Appointment)
 
 	rows, err := provider.DBConnection.SQL_DB.QueryContext(ctxTimeout, queryCommand, ID)
